@@ -1,0 +1,8 @@
+com\example\mutants\entities\ResponseStats.class
+com\example\mutants\services\MutantsInterface.class
+com\example\mutants\services\MutantDB.class
+com\example\mutants\entities\Stats.class
+com\example\mutants\entities\Response.class
+com\example\mutants\controller\MutantManagement.class
+com\example\mutants\entities\Mutants.class
+com\example\mutants\MutantsApplication.class
