@@ -12,5 +12,7 @@ public interface MutantsInterface {
 	public boolean updateStats(boolean isMutant);
 	
 	public Stats getStats();
+	
+	public boolean checkEntry(String[] dna);
 
 }

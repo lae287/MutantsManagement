@@ -22,22 +22,27 @@ public class MutantManagement {
 	
 	@PostMapping("/mutant")
 	ResponseEntity <Response> crearUsuario(@RequestBody Mutants mutant) {
-		mutantsInterface.createMutant(mutant);
-		if (mutantsInterface.isMutant(mutant)) {
-			mutantsInterface.updateStats(true);
-			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}else {
-			mutantsInterface.updateStats(false);
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		if (mutantsInterface.checkEntry(mutant.getDna())) {
+			if (mutantsInterface.isMutant(mutant)) {
+				mutantsInterface.updateStats(true);
+				return ResponseEntity.status(HttpStatus.OK).body(null);
+			}else {
+				mutantsInterface.updateStats(false);
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+			}
+		} else {
+			Response response = new Response("DNA CHAIN CORRUPTED");
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
 		}
+		
 	}
 	
 	@GetMapping("/stats")
-	ResponseEntity<Response> consultarUsuario() {
-		ResponseStats responseStats = new ResponseStats("Mutant Statistics");
+	ResponseEntity<ResponseStats> consultarUsuario() {
+		ResponseStats responseStats = new ResponseStats();
 		Stats responseS = mutantsInterface.getStats();
-		responseStats.setIsMutant(responseS.getIsMutant());
-		responseStats.setIsntMutant(responseS.getIsntMutant());
+		responseStats.setCount_mutant_dna(responseS.getIsMutant());
+		responseStats.setCount_human_dna(responseS.getIsntMutant());
 		float ratio = (float)responseS.getIsMutant() / (float)responseS.getIsntMutant();
 		responseStats.setRatio(ratio);
 		return ResponseEntity.status(HttpStatus.OK).body(responseStats);
